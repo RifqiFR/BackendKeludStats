@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\InfografiResources;
 use Illuminate\Http\Request;
 use App\Models\Infografi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
+use PhpParser\Node\Stmt\TryCatch;
 
 class InfografiController extends Controller
 {
@@ -36,6 +38,7 @@ class InfografiController extends Controller
             "judul" => "required|string",
             "gambar" => "max:2000|mimes:jpeg,jpg,png,svg|required",
             "caption" => "required|string",
+            "date" => ""
         ]);
 
         if ($picture = $request->file("gambar")) {
@@ -45,6 +48,11 @@ class InfografiController extends Controller
 
         $infografi = new Infografi($request->all());
         $infografi->gambar = $pictureName;
+        try {
+            $infografi->date = new Carbon($request->date);
+        } catch (\Throwable $th) {
+            abort(422);
+        }
         $infografi->save();
 
         return new InfografiResources($infografi);
@@ -74,6 +82,7 @@ class InfografiController extends Controller
             "judul" => "required|string",
             "gambar" => "max:2000|mimes:jpeg,jpg,png,svg",
             "caption" => "required|string",
+            "date" => "required|string"
         ]);
 
         if ($picture = $request->file("gambar")) {
@@ -86,6 +95,11 @@ class InfografiController extends Controller
 
         $infografi->judul = $request->judul;
         $infografi->caption = $request->caption;
+        try {
+            $infografi->date = new Carbon($request->date);
+        } catch (\Throwable $th) {
+            abort(422);
+        }
         $infografi->save();
 
         return new InfografiResources($infografi);

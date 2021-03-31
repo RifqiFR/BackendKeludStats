@@ -18,6 +18,7 @@ class CreateInfografisTable extends Migration
             $table->string('judul');
             $table->string('gambar');
             $table->string('caption');
+            $table->date('date');
         });
     }
 
