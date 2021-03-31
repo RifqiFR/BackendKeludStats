@@ -21,6 +21,7 @@ class InfografiResources extends JsonResource
             'judul' => $this->judul,
             'gambar' => URL::to("storage" . "/" . Infografi::$FOLDER_NAME . "/" . $this->gambar),
             'caption' => $this->caption,
+            'date' => $this->date,
         ];
     }
 }

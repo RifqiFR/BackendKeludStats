@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class IndikatorSatuan extends Model
 {
@@ -15,4 +16,9 @@ class IndikatorSatuan extends Model
     ];
 
     public $timestamps = false;
+
+    public function Nilaipertahuns(): HasMany
+    {
+        return $this->hasMany(NilaiPerTahun::class);
+    }
 }
