@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Infografi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
-use PhpParser\Node\Stmt\TryCatch;
 
 class InfografiController extends Controller
 {
@@ -23,7 +22,7 @@ class InfografiController extends Controller
      */
     public function index()
     {
-        return Infografi::all();
+        return InfografiResources::collection(Infografi::all());
     }
 
     /**
@@ -38,7 +37,7 @@ class InfografiController extends Controller
             "judul" => "required|string",
             "gambar" => "max:2000|mimes:jpeg,jpg,png,svg|required",
             "caption" => "required|string",
-            "date" => ""
+            "date" => "required"
         ]);
 
         if ($picture = $request->file("gambar")) {
@@ -118,6 +117,6 @@ class InfografiController extends Controller
 
         $infografi->delete();
 
-        return response($lastpicture, 200);
+        return response(null, 204);
     }
 }
