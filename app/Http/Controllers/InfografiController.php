@@ -22,7 +22,7 @@ class InfografiController extends Controller
      */
     public function index()
     {
-        return Infografi::all()->orderBy('date', 'desc');
+        return Infografi::orderBy('date', 'desc')->get();
     }
 
     /**
