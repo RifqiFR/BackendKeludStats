@@ -20,7 +20,7 @@ class NilaiPerTahunController extends Controller
      */
     public function index(IndikatorSatuan $indikatorsatuan)
     {
-        return $indikatorsatuan->nilaipertahun;
+        return $indikatorsatuan->nilaiPerTahuns;
     }
 
     /**
