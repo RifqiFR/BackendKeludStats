@@ -16,7 +16,7 @@ class Subindikator extends Model
 
     public $timestamps = false;
 
-    public function Indikatorsatuans(): HasMany
+    public function indikatorSatuans(): HasMany
     {
         return $this->hasMany(IndikatorSatuan::class);
     }

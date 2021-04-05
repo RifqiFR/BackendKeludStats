@@ -50,7 +50,7 @@ Route::group(['prefix' => 'indikatorsatuan'], function () {
 });
 
 Route::group(['prefix' => 'nilaipertahun'], function () {
-    Route::get('indikatorsatuan/{nilaipertahun}', [NilaiPerTahunController::class, 'index']);
+    Route::get('indikatorsatuan/{indikatorsatuan}', [NilaiPerTahunController::class, 'index']);
     Route::post('/', [NilaiPerTahunController::class, 'store']);
     Route::put('{nilaipertahun}', [NilaiPerTahunController::class, 'update']);
     Route::delete('{nilaipertahun}', [NilaiPerTahunController::class, 'destroy']);

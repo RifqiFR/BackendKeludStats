@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IndikatorSatuanResource;
 use Illuminate\Http\Request;
 use App\Models\Subindikator;
 use App\Models\IndikatorSatuan;
@@ -20,7 +21,7 @@ class IndikatorSatuanController extends Controller
      */
     public function index(Subindikator $subindikator)
     {
-        return $subindikator->indikatorsatuan;
+        return IndikatorSatuanResource::collection($subindikator->indikatorSatuans);
     }
 
     /**

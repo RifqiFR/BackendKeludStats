@@ -17,7 +17,7 @@ class IndikatorSatuan extends Model
 
     public $timestamps = false;
 
-    public function Nilaipertahuns(): HasMany
+    public function nilaiPerTahuns(): HasMany
     {
         return $this->hasMany(NilaiPerTahun::class);
     }
