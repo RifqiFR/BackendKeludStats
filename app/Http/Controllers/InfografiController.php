@@ -103,7 +103,7 @@ class InfografiController extends Controller
         }
         $infografi->save();
 
-        return new InfografiResources($infografi);
+        return response()->json(new InfografiResources($infografi));
     }
 
     /**
