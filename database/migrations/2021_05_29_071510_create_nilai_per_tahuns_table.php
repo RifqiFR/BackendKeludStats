@@ -14,8 +14,8 @@ class CreateNilaiPerTahunsTable extends Migration
     public function up()
     {
         Schema::create('nilai_per_tahuns', function (Blueprint $table) {
-            $table->id();
             $table->integer('tahun');
+            $table->foreign('tahun')->references("tahun")->on('years')->onDelete('cascade');
             $table->float('nilai', 9, 2);
             $table->foreignId('indikator_satuan_id')->constrained('indikator_satuans')->onDelete('cascade');
         });

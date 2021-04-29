@@ -8,6 +8,7 @@ use App\Http\Controllers\InfografiController;
 use App\Http\Controllers\SubindikatorController;
 use App\Http\Controllers\IndikatorSatuanController;
 use App\Http\Controllers\NilaiPerTahunController;
+use App\Http\Controllers\YearController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,15 +44,21 @@ Route::apiResource('indikator', IndikatorController::class);
 Route::apiResource('infografi', InfografiController::class);
 
 Route::group(['prefix' => 'indikatorsatuan'], function () {
-    Route::get('subindikator/{subindikator}', [IndikatorSatuanController::class, 'index']);
+    Route::get('/', [IndikatorSatuanController::class, 'index']);
     Route::post('/', [IndikatorSatuanController::class, 'store']);
     Route::put('{indikatorsatuan}', [IndikatorSatuanController::class, 'update']);
     Route::delete('{subindikator}', [IndikatorSatuanController::class, 'destroy']);
 });
 
 Route::group(['prefix' => 'nilaipertahun'], function () {
-    Route::get('indikatorsatuan/{indikatorsatuan}', [NilaiPerTahunController::class, 'index']);
+    // Route::get('/', [NilaiPerTahunController::class, 'index']);
     Route::post('/', [NilaiPerTahunController::class, 'store']);
-    Route::put('{nilaipertahun}', [NilaiPerTahunController::class, 'update']);
-    Route::delete('{nilaipertahun}', [NilaiPerTahunController::class, 'destroy']);
+    Route::put('{tahun}/{indikatorSatuanId}', [NilaiPerTahunController::class, 'update']);
+    Route::delete('{tahun}/{indikatorSatuanId}', [NilaiPerTahunController::class, 'destroy']);
+});
+
+Route::group(["prefix" => "years"], function() {
+    Route::get("/", [YearController::class, "index"]);
+    Route::post("/", [YearController::class, "store"]);
+    Route::delete("/{tahun}", [YearController::class, "destroy"]);
 });

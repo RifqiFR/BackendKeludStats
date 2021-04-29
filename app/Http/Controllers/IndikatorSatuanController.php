@@ -19,9 +19,16 @@ class IndikatorSatuanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Subindikator $subindikator)
+    public function index(Request $request)
     {
-        return IndikatorSatuanResource::collection($subindikator->indikatorSatuans);
+        $year = $request->year;
+        $subindikator_id = $request->subindikator;
+
+        return IndikatorSatuan::with(["NilaiPerTahuns" => function($query) use ($year) {
+                    $query->where("tahun", "=", $year);
+                }])
+                ->where("subindikator_id", "=", $subindikator_id)
+                ->get();
     }
 
     /**
