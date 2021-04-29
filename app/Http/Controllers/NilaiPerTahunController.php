@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\IndikatorSatuan;
+use App\Models\Year;
 use App\Models\NilaiPerTahun;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class NilaiPerTahunController extends Controller
 {
@@ -18,9 +21,15 @@ class NilaiPerTahunController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndikatorSatuan $indikatorsatuan)
+    public function index(Request $request, IndikatorSatuan $indikatorsatuan)
     {
-        return $indikatorsatuan->nilaiPerTahuns;
+        $year = $request->year;
+        $indikatorsatuanId = $request->indikatorsatuan;
+
+        return NilaiPerTahun::where("tahun", "=", $year)
+                ->where("indikator_satuan_id", "=", $indikatorsatuanId)
+                ->get();
+        // $indikatorsatuan->nilaiPerTahuns;
     }
 
     /**
@@ -32,15 +41,27 @@ class NilaiPerTahunController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "tahun" => "required|integer",
             "nilai" => "required|max:999999999",
-            "indikatorsatuan_id" => "required|integer",
+            "tahun" => "required|integer",
+            "indikator_satuan_id" => "required|integer"
         ]);
 
         try {
-            $indikatorsatuan = IndikatorSatuan::findOrFail($request->indikatorsatuan_id);
+            $nilaipertahuns = NilaiPerTahun::where([
+                ["tahun", $request->tahun],
+                ["indikator_satuan_id", $request->indikator_satuan_id]
+            ])->get();
+
+            if(!$nilaipertahuns->isEmpty()){
+                throw(new \Exception("Nilai per tahun yang sama sudah ada di database"));
+            }
+
+            $indikatorsatuan = IndikatorSatuan::findOrFail($request->indikator_satuan_id);
             $nilaipertahun = new NilaiPerTahun($request->all());
 
+            $year = Year::findOrFail($request->tahun);
+
+            $nilaipertahun->year()->associate($year);
             $indikatorsatuan->nilaipertahuns()->save($nilaipertahun);
             return $nilaipertahun;
         } catch (\Exception $e) {
@@ -69,9 +90,7 @@ class NilaiPerTahunController extends Controller
     public function update(Request $request, NilaiPerTahun $nilaipertahun)
     {
         $request->validate([
-            "tahun" => "required|integer",
-            "nilai" => "required|max:999999999",
-            "indikatorsatuan_id" => "required|integer",
+            "nilai" => "required|max:999999999"
         ]);
 
         try {
@@ -93,9 +112,12 @@ class NilaiPerTahunController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($tahun, $indikatorSatuanId)
     {
-        NilaiPerTahun::destroy($id);
+        NilaiPerTahun::where([
+            ["tahun", $tahun],
+            ["indikator_satuan_id", $indikatorSatuanId]
+        ])->delete();
 
         return response(' ', 204);
     }
